@@ -1,0 +1,5 @@
+node_modules/
+last-email.html
+.env
+debug/
+local-run.log

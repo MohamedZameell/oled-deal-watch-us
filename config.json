@@ -1,0 +1,86 @@
+{
+  "region": {
+    "title": "OLED Deal Watch US",
+    "subjectTag": "OLED US",
+    "currency": "$",
+    "numberLocale": "en-US",
+    "browserLocale": "en-US",
+    "timeZone": "America/New_York",
+    "tzLabel": "ET",
+    "minAmount": 250,
+    "textParser": "labeled",
+    "buyNote": "Move fast: deals like this can sell out within a day. Before paying, confirm the seller is the retailer itself (not a marketplace seller), the return policy, warranty, and whether it is open-box.",
+    "footer": "Prices are read from listing pages and re-checked on the product page before an alert, but can still be wrong; verify before paying.",
+    "dailyDigestHours": [
+      8,
+      9
+    ]
+  },
+  "emailMode": "alerts-only",
+  "crazyThreshold": 0.7,
+  "nearMissThreshold": 0.85,
+  "historyThreshold": 0.75,
+  "minPrice": 250,
+  "maxPrice": 4000,
+  "sources": [
+    {
+      "name": "Amazon.com",
+      "kind": "amazon",
+      "mobile": false,
+      "retries": 3,
+      "urls": [
+        "https://www.amazon.com/s?k=oled+gaming+monitor",
+        "https://www.amazon.com/s?k=oled+monitor",
+        "https://www.amazon.com/s?k=qd-oled+monitor",
+        "https://www.amazon.com/s?k=oled+monitor+240hz",
+        "https://www.amazon.com/s?k=oled+monitor+renewed",
+        "https://www.amazon.com/s?k=oled+monitor+open+box"
+      ]
+    },
+    {
+      "name": "Best Buy",
+      "kind": "bestbuy",
+      "urls": [
+        "https://www.bestbuy.com/site/searchpage.jsp?st=oled+monitor&intl=nosplash",
+        "https://www.bestbuy.com/site/searchpage.jsp?st=qd-oled+gaming+monitor&intl=nosplash",
+        "https://www.bestbuy.com/site/searchpage.jsp?st=oled+gaming+monitor&intl=nosplash"
+      ]
+    },
+    {
+      "name": "Samsung US",
+      "kind": "text",
+      "urls": [
+        "https://www.samsung.com/us/computing/monitors/gaming/?oled"
+      ]
+    },
+    {
+      "name": "Newegg",
+      "kind": "cards",
+      "sel": ".product-list > .grid-col, .item-cell",
+      "priceRe": [
+        "\\$ \\| ([\\d,]+) \\| \\.\\d\\d",
+        "\\$([\\d,]+\\.\\d\\d)\\s*\\|\\s*(?:Save|More options|FREE|ADD)"
+      ],
+      "refRe": [
+        "\\.\\d\\d \\| \\$([\\d,]+\\.\\d\\d)",
+        "\\$([\\d,]+\\.\\d\\d)\\s*\\|\\s*\\$[\\d,]+\\.\\d\\d\\s*\\|\\s*Save"
+      ],
+      "urls": [
+        "https://www.newegg.com/p/pl?d=oled+monitor",
+        "https://www.newegg.com/p/pl?d=qd-oled+monitor"
+      ],
+      "wait": 4000
+    },
+    {
+      "name": "DealSea",
+      "kind": "dealsea",
+      "urls": [
+        "https://dealsea.com/search?q=oled+monitor",
+        "https://dealsea.com/search?q=qd-oled",
+        "https://dealsea.com/search?q=oled+gaming+monitor"
+      ],
+      "feed": true
+    }
+  ],
+  "streetPriceSeeds": {}
+}

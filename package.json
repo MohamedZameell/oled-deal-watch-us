@@ -1,0 +1,15 @@
+{
+  "name": "oled-deal-watch-us",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "OLED monitor price-anomaly scanner (US). Compares each listing with other sellers, verifies on the product page, emails via Gmail.",
+  "scripts": {
+    "scan": "node scan.js",
+    "dry": "node scan.js --dry"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.16",
+    "playwright": "^1.49.0"
+  }
+}

@@ -1,0 +1,62 @@
+name: OLED deal scan US
+
+on:
+  schedule:
+    # every 2 hours at :20 UTC (off the :00 mark); the run landing in 8-9am ET also sends the daily digest
+    - cron: "20 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      args:
+        description: 'Extra scan.js flags, e.g. "--dry --verify-sample" for a test run that sends nothing and saves nothing'
+        required: false
+        default: ''
+
+permissions:
+  contents: write   # lets the job commit state/ (price history) back to the repo
+
+concurrency:
+  group: oled-scan-us
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    # pinned: ubuntu-latest moves to 26.04 in Oct 2026; 24.04 ships Google Chrome, so no browser download or apt install per run
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      - name: Scan and email
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          BROWSER_CHANNEL: chrome   # the runner's real Google Chrome: retailers refuse bare headless Chromium on product pages
+          FORCE_EMAIL: ${{ github.event_name == 'workflow_dispatch' && !contains(inputs.args, '--dry') && '1' || '' }}
+          SCAN_ARGS: ${{ inputs.args }}
+        run: node scan.js $SCAN_ARGS
+      - name: Keep debug screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug
+          path: debug
+          if-no-files-found: ignore
+          retention-days: 3
+      - name: Save price history
+        if: always() && !contains(inputs.args, '--dry')
+        run: |
+          git config user.name "oled-deal-watch"
+          git config user.email "actions@users.noreply.github.com"
+          git add state
+          git diff --staged --quiet && exit 0
+          git commit -m "state: update price history [skip ci]"
+          # rebase in case anything else pushed meanwhile
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
+          exit 1
