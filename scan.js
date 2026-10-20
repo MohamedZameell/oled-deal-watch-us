@@ -179,6 +179,8 @@ async function scrapeSource(ctx, src) {
         tries++;
         await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
         await page.waitForTimeout(4000);
+        // Best Buy renders the result grid late: a fixed 4s wait sometimes read the page before any product appeared
+        if (src.kind === 'bestbuy') await page.waitForSelector('a.product-list-item-link', { timeout: 15000 }).catch(() => {});
         for (let i = 0; i < 5; i++) { await page.mouse.wheel(0, 1600); await page.waitForTimeout(400); }
         body = await page.evaluate(() => document.body.innerText);
         blocked = BLOCKED.test(body.slice(0, 1500)) || BLOCKED.test(await page.title());
@@ -370,7 +372,9 @@ async function main() {
     fs.writeFileSync('last-email.html', html); return;
   }
   const hourNow = Number(new Date().toLocaleString('en-US', { timeZone: R.timeZone, hour: 'numeric', hour12: false }));
-  const dailyDigest = (R.dailyDigestHours || []).includes(hourNow);
+  // hourly runs land in several digest hours (and GitHub delays some), so send the daily digest only once per local date
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: R.timeZone });
+  const dailyDigest = (R.dailyDigestHours || []).includes(hourNow) && readJson('digest.json', {}).date !== today;
   if (cfg.emailMode === 'alerts-only' && !fresh.length && !dailyDigest && !process.env.FORCE_EMAIL) { console.log('no alert; skipping email'); return; }
   if (process.env.MAIL_VIA_GH) {
     const { execFileSync } = await import('node:child_process');
@@ -382,6 +386,7 @@ async function main() {
   if (!GMAIL_USER || !GMAIL_APP_PASSWORD || !MAIL_TO) throw new Error('Missing GMAIL_USER / GMAIL_APP_PASSWORD / MAIL_TO');
   const tx = nodemailer.createTransport({ host: 'smtp.gmail.com', port: 465, secure: true, auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD } });
   await tx.sendMail({ from: `${R.title} <${GMAIL_USER}>`, to: MAIL_TO, subject, html });
+  if (dailyDigest) writeJson('digest.json', { date: today });
   console.log('email sent:', subject);
 }
 main().then(() => process.exit(0)).catch((e) => { console.error(e); process.exit(1); });

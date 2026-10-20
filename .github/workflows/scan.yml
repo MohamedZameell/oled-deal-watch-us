@@ -2,8 +2,8 @@ name: OLED deal scan US
 
 on:
   schedule:
-    # every 2 hours at :20 UTC (off the :00 mark); the run landing in 8-9am ET also sends the daily digest
-    - cron: "20 */2 * * *"
+    # every hour at :20 UTC (off the :00 mark); the first run landing in 8-9am ET also sends the daily digest
+    - cron: "20 * * * *"
   workflow_dispatch:
     inputs:
       args:
@@ -24,8 +24,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -43,7 +43,7 @@ jobs:
         run: node scan.js $SCAN_ARGS
       - name: Keep debug screenshots
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: debug
           path: debug
