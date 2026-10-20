@@ -43,7 +43,7 @@ jobs:
         run: node scan.js $SCAN_ARGS
       - name: Keep debug screenshots
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: debug
           path: debug

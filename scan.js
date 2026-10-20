@@ -179,8 +179,11 @@ async function scrapeSource(ctx, src) {
         tries++;
         await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
         await page.waitForTimeout(4000);
-        // Best Buy renders the result grid late: a fixed 4s wait sometimes read the page before any product appeared
-        if (src.kind === 'bestbuy') await page.waitForSelector('a.product-list-item-link', { timeout: 15000 }).catch(() => {});
+        // Best Buy renders the result grid late, and the first search of a session is often ads only until a reload
+        if (src.kind === 'bestbuy') {
+          const grid = () => page.waitForSelector('a.product-list-item-link', { timeout: 15000 }).then(() => true, () => false);
+          if (!(await grid())) { await page.reload({ waitUntil: 'domcontentloaded', timeout: 45000 }); await grid(); }
+        }
         for (let i = 0; i < 5; i++) { await page.mouse.wheel(0, 1600); await page.waitForTimeout(400); }
         body = await page.evaluate(() => document.body.innerText);
         blocked = BLOCKED.test(body.slice(0, 1500)) || BLOCKED.test(await page.title());
