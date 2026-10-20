@@ -409,9 +409,11 @@ async function main() {
   writeJson('community.json', { init: seen?.init || now, ids });
   for (const p of DRY ? community.posts : newPosts) {   // price + what that model normally costs, when the post names one
     const text = p.title + ' ' + p.body; const key = modelKey(text);
-    p.price = amountsIn(text).filter((n) => n >= cfg.minPrice && n <= cfg.maxPrice)[0] || 0;
+    const amounts = [...new Set(amountsIn(text).filter((n) => n >= cfg.minPrice && n <= cfg.maxPrice))];
+    p.price = amounts[0] || 0;
+    // "G6 ₹39,848 vs AW2726DM ₹31,063": with several prices the model and the price may not belong together
     const hist = key ? (history[key] || []).map((h) => h.price) : [];
-    p.ref = key ? seeds[key] || (hist.length ? median(hist) : 0) : 0;
+    p.ref = key && amounts.length === 1 ? seeds[key] || (hist.length ? median(hist) : 0) : 0;
   }
 
   // a source that finds nothing several runs in a row is probably broken (layout change, new bot wall): warn once
