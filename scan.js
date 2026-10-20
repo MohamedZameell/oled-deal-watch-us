@@ -226,6 +226,60 @@ async function scrapeSource(ctx, src) {
   return { items, errors };
 }
 
+// ---------- community posts ----------
+// Deal posts on Reddit / DesiDime / public Telegram channels: catch what the retailer scan can't see
+// (the ₹25,680 Samsung corporate-store G5 surfaced on r/IndianGaming first). Plain HTTP, no browser.
+const DEAL_WORDS = /deal|price|sale|drop|offer|steal|discount|lowest|cheap|coupon|clearance|open[\s-]?box|repackag|refurb|₹|\brs\.?\s?\d|\b\d{2,3}k\b/i;
+// Reddit's <content> is HTML escaped once more, so decode, strip tags, and repeat
+const decode = (s) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'").replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
+const strip = (s) => s.replace(/<[^>]+>/g, ' ');
+const unhtml = (s) => strip(decode(strip(decode(String(s))))).replace(/\s+/g, ' ').trim();
+const parsers = {
+  // Reddit search RSS (Atom): one <entry> per post; the JSON API and HTML search are blocked from GitHub IPs, RSS is not
+  reddit: (s) => s.split('<entry>').slice(1).map((e) => ({ id: (e.match(/<id>([^<]+)/) || [])[1], title: unhtml((e.match(/<title>([^<]*)/) || [])[1] || ''),
+    body: unhtml((e.match(/<content[^>]*>([\s\S]*?)<\/content>/) || [])[1] || '').slice(0, 1500), url: (e.match(/<link href="([^"]+)"/) || [])[1],
+    t: (e.match(/<published>([^<]+)/) || [])[1], where: 'r/' + ((e.match(/<category term="([^"]+)"/) || [])[1] || 'reddit') })),
+  // DesiDime "new deals" page: every /deals/<slug>-<id> link is a deal post
+  desidime: (s) => [...s.matchAll(/<a[^>]+href="(\/deals\/[a-z0-9-]+-(\d+))"[^>]*>([^<]{10,250})<\/a>/g)]
+    .map((m) => ({ id: 'dd' + m[2], title: unhtml(m[3]), body: '', url: 'https://www.desidime.com' + m[1], where: 'DesiDime' })),
+  // public Telegram channel preview (t.me/s/<channel>): readable without logging in
+  tgchannel: (s) => s.split('data-post="').slice(1).map((e) => {
+    const post = e.slice(0, e.indexOf('"')); const text = unhtml((e.match(/tgme_widget_message_text[^>]*>([\s\S]*?)<\/div>/) || [])[1] || '');
+    return { id: 'tg' + post, title: text.slice(0, 160), body: text, url: 'https://t.me/' + post, t: (e.match(/<time datetime="([^"]+)"/) || [])[1], where: 'Telegram @' + post.split('/')[0] };
+  }),
+};
+
+async function fetchCommunity() {
+  const posts = []; const health = [];
+  for (const src of cfg.community || []) {
+    let n = 0; const errors = [];
+    for (const url of src.urls) {
+      try {
+        let r;
+        for (let i = 0; i < 2; i++) {   // Reddit answers bursts with 429: one slow retry
+          r = await fetch(url, { headers: { 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'accept-language': 'en-IN,en;q=0.9' } });
+          if (r.status !== 429) break;
+          await new Promise((ok) => setTimeout(ok, 15000));
+        }
+        if (!r.ok) { errors.push('HTTP ' + r.status); continue; }
+        for (const p of parsers[src.kind](await r.text())) {
+          if (!p.id || !p.title) continue; n++;
+          const text = p.title + ' ' + p.body;
+          // a post must be about an OLED monitor; on Reddit (questions, reviews, flexes) it must also read like a deal
+          if (!/oled/i.test(text) || !/monitor/i.test(text) && !MONITOR_OK.test(p.title) || NOT_MONITOR.test(p.title.replace(/monitor/ig, ''))) continue;
+          if (!/oled|monitor/i.test(p.title) && !modelKey(p.title)) continue;   // OLED only in the body: a PC-build thread, not a deal
+          if (src.needDealWords && !DEAL_WORDS.test(text)) continue;
+          if (p.t && Date.now() - Date.parse(p.t) > 3 * DAY) continue;
+          posts.push({ ...p, source: src.name });
+        }
+      } catch (e) { errors.push(String(e.message).slice(0, 60)); }
+    }
+    health.push({ name: src.name, found: n, errors: [...new Set(errors)] });
+    console.log(src.name, 'posts', n, errors.length ? 'ERR ' + [...new Set(errors)].join(',') : '');
+  }
+  return { posts: [...new Map(posts.map((p) => [p.id, p])).values()], health };
+}
+
 // Re-open a deal's product page: is the price really there, and is it in stock?
 // A misread price (B&H once parsed as $60 for a $699 monitor) or a sold-out listing must not become an alert.
 async function verifyDeal(ctx, it) {
@@ -269,6 +323,8 @@ async function main() {
     health.push({ name: src.name, found: good.length, errors: [...new Set(errors)] });
     console.log(src.name, 'raw', items.length, 'kept', good.length, errors.length ? 'ERR ' + [...new Set(errors)].join(',') : '');
   }
+
+  const community = await fetchCommunity();
 
   // cheapest listing per (model, source, condition)
   const best = new Map();
@@ -345,6 +401,29 @@ async function main() {
   writeJson('history.json', history); writeJson('alerted.json', alerted);
   writeJson('snapshot.json', { t: now, items: mine.filter((x) => !x.feed).map(({ key, generic, source, retailer, price, risky, title, url }) => ({ key, generic, source, retailer, price, risky, title, url })) });
 
+  // community posts: report each one once; the very first run only records what is already there
+  const seen = readJson('community.json', null);
+  const newPosts = !seen ? [] : community.posts.filter((p) => !seen.ids[p.id]);
+  const ids = Object.fromEntries(Object.entries(seen?.ids || {}).filter(([, t]) => Date.now() - Date.parse(t) < 30 * DAY));
+  for (const p of community.posts) ids[p.id] ||= now;
+  writeJson('community.json', { init: seen?.init || now, ids });
+  for (const p of DRY ? community.posts : newPosts) {   // price + what that model normally costs, when the post names one
+    const text = p.title + ' ' + p.body; const key = modelKey(text);
+    p.price = amountsIn(text).filter((n) => n >= cfg.minPrice && n <= cfg.maxPrice)[0] || 0;
+    const hist = key ? (history[key] || []).map((h) => h.price) : [];
+    p.ref = key ? seeds[key] || (hist.length ? median(hist) : 0) : 0;
+  }
+
+  // a source that finds nothing several runs in a row is probably broken (layout change, new bot wall): warn once
+  const streaks = readJson('health.json', {});
+  const broken = [];
+  for (const h of [...health, ...community.health]) {
+    streaks[h.name] = h.found ? 0 : (streaks[h.name] || 0) + 1;
+    const known = [...cfg.sources, ...(cfg.community || [])].find((x) => x.name === h.name)?.knownBlocked;
+    if (streaks[h.name] === (cfg.brokenAfterRuns || 6) && !known) broken.push({ ...h, runs: streaks[h.name] });
+  }
+  writeJson('health.json', streaks);
+
   // ---------- email ----------
   const stamp = new Date().toLocaleString(R.numberLocale, { timeZone: R.timeZone, dateStyle: 'medium', timeStyle: 'short' });
   const th = 'style="text-align:left;padding:6px 8px;background:#f3f4f6;border-bottom:1px solid #e5e7eb"';
@@ -362,14 +441,27 @@ async function main() {
     : `<h3>No new crazy deal this run.</h3>`;
   if (dropped.length) html += `<p style="color:#6b7280">Skipped ${dropped.length} deal${dropped.length > 1 ? 's' : ''} that failed the page check: ${dropped.map((c) => `${esc(c.key)} ${fmt(c.price)} at ${esc(c.source)} (${esc(c.check)})`).join('; ')}.</p>`;
   if (near.length) html += `<h3>Near-misses (${Math.round((1 - cfg.nearMissThreshold) * 100)}%+ below, or a bigger drop with only one price to compare)</h3>${tbl(near.sort((a, b) => b.pct - a.pct).slice(0, 8))}`;
+  const postLine = (p) => `${esc(p.where)}: ${esc(p.title.slice(0, 140))}${p.price ? ` (${fmt(p.price)}${p.ref ? `, normally ~${fmt(p.ref)}` : ''})` : ''}`;
+  if (newPosts.length) html += `<h3>💬 New community posts</h3><ul>${newPosts.map((p) => `<li><a href="${esc(p.url)}">${postLine(p)}</a></li>`).join('')}</ul>`;
+  if (broken.length) html += `<h3 style="color:#b45309">⚠ Sources that stopped working</h3><ul>${broken.map((h) => `<li>${esc(h.name)}: nothing found for ${h.runs} runs in a row${h.errors.length ? ' (' + esc(h.errors.join(', ')) + ')' : ''}. Probably a layout change or a new bot wall: scan.js needs a fix.</li>`).join('')}</ul>`;
   html += `<h3>Cheapest prices right now</h3><table style="border-collapse:collapse;font:14px Arial;width:100%"><tr><th ${th}>Model</th><th ${th}>Price</th><th ${th}>Where</th></tr>${cheapest.map((c) => `<tr><td ${td}>${esc(c.title.slice(0, 80))}</td><td ${td}><b>${fmt(c.price)}</b>${c.mrp > c.price ? ` <s style="color:#6b7280">${fmt(c.mrp)}</s>` : ''}</td><td ${td}><a href="${esc(c.url)}">${esc(c.source)}</a></td></tr>`).join('')}</table>`;
-  html += `<h3>Source health</h3><ul>${health.map((h) => `<li>${h.found ? '✅' : '❌'} ${esc(h.name)}: ${h.found} items${h.errors.length ? ' (' + esc(h.errors.join(', ')) + ')' : ''}</li>`).join('')}`;
+  html += `<h3>Source health</h3><ul>${[...health, ...community.health].map((h) => `<li>${h.found ? '✅' : '❌'} ${esc(h.name)}: ${h.found} items${h.errors.length ? ' (' + esc(h.errors.join(', ')) + ')' : ''}</li>`).join('')}`;
   if (cfg.peerSnapshot) html += `<li>${peerAgeH < 26 ? '✅' : '⚠️'} ${esc(cfg.peerLabel)}: ${peer ? `last ran ${peerAgeH < 1 ? 'under an hour' : Math.round(peerAgeH) + 'h'} ago, ${peer.items.length} listings` : 'no run recorded yet'}${peerAgeH >= 26 ? ' (not running: is the laptop on?)' : ''}</li>`;
   html += `</ul><p style="color:#6b7280">${esc(R.footer)}</p></div>`;
   const subject = fresh.length ? `🚨 ${R.subjectTag} crazy deal: ${fresh[0].title.slice(0, 40)} ${fmt(fresh[0].price)} (${fresh[0].pct}% below)`
-    : `${R.subjectTag} digest ${stamp}: no crazy deal (${cheapest[0] ? 'low ' + fmt(cheapest[0].price) : 'no data'})${bad.length > 3 ? ' ⚠ many sources failed' : ''}`;
+    : newPosts.length ? `💬 ${R.subjectTag} community post: ${newPosts[0].title.slice(0, 60)}`
+    : `${R.subjectTag} digest ${stamp}: no crazy deal (${cheapest[0] ? 'low ' + fmt(cheapest[0].price) : 'no data'})${bad.length > 3 ? ' ⚠ many sources failed' : ''}${broken.length ? ' ⚠ ' + broken.map((h) => h.name).join(', ') + ' stopped working' : ''}`;
+
+  // Telegram: instant phone ping for what's worth acting on (deals, posts, broken sources); digests stay in email
+  const tg = [
+    ...fresh.map((c) => `🚨 <b>Crazy deal</b>: ${esc(c.title.slice(0, 90))}\n<b>${fmt(c.price)}</b>, ${c.pct}% below ~${fmt(c.ref)}${c.risky ? ' (open-box/refurb?)' : ''} · <a href="${esc(c.url)}">${esc(c.source)}</a>`),
+    ...newPosts.map((p) => `💬 <a href="${esc(p.url)}">${postLine(p)}</a>`),
+    ...broken.map((h) => `⚠️ ${esc(h.name)} found nothing for ${h.runs} runs in a row${h.errors.length ? ' (' + esc(h.errors.join(', ')) + ')' : ''}`),
+  ].join('\n\n');
 
   if (DRY) {
+    console.log('\nCOMMUNITY (all matching posts, shown as if new):\n' + community.posts.map((p) => '  ' + postLine(p) + ' ' + p.url).join('\n'));
+    console.log('\nTELEGRAM:', tg || '(nothing to send)');
     console.log('\nSUBJECT:', subject, '\nCRAZY', fresh.length, 'DROPPED', dropped.length, 'NEAR', near.length, 'PEER', peerItems.length,
       '\nCHEAPEST', cheapest.map((c) => `${c.key} ${c.price} ${c.source}`), '\nNEAR', near.map((c) => `${c.key} ${c.price} ${c.source} ref ${c.ref} (${c.basis})`));
     fs.writeFileSync('last-email.html', html); return;
@@ -378,7 +470,14 @@ async function main() {
   // hourly runs land in several digest hours (and GitHub delays some), so send the daily digest only once per local date
   const today = new Date().toLocaleDateString('en-CA', { timeZone: R.timeZone });
   const dailyDigest = (R.dailyDigestHours || []).includes(hourNow) && readJson('digest.json', {}).date !== today;
-  if (cfg.emailMode === 'alerts-only' && !fresh.length && !dailyDigest && !process.env.FORCE_EMAIL) { console.log('no alert; skipping email'); return; }
+  const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID } = process.env;
+  if (tg && TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+    // a failed ping must not cost the email
+    const r = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: tg.slice(0, 4000), parse_mode: 'HTML', disable_web_page_preview: true }) }).catch((e) => ({ ok: false, status: e.message }));
+    console.log('telegram', r.ok ? 'sent' : 'FAILED ' + r.status);
+  }
+  if (cfg.emailMode === 'alerts-only' && !fresh.length && !newPosts.length && !broken.length && !dailyDigest && !process.env.FORCE_EMAIL) { console.log('no alert; skipping email'); return; }
   if (process.env.MAIL_VIA_GH) {
     const { execFileSync } = await import('node:child_process');
     execFileSync('gh', ['workflow', 'run', 'mail.yml', '-R', process.env.MAIL_VIA_GH, '--json'], { input: JSON.stringify({ subject, html }) });
