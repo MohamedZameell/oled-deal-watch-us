@@ -1,15 +1,15 @@
 {
- "t": "2026-10-23T22:14:57.168Z",
+ "t": "2026-10-24T00:45:52.807Z",
  "items": [
   {
-   "key": "XG27AQDMGR",
+   "key": "27G50SF",
    "generic": false,
    "source": "Amazon.com",
    "retailer": "amazon",
-   "price": 399,
+   "price": 330,
    "risky": false,
-   "title": "ASUS ROG XG27AQDMGR 27 Inch 1440p 240Hz Glossy OLED HDR Gaming Monitor",
-   "url": "https://www.amazon.com/dp/B0FWHPY1GJ"
+   "title": "Samsung 27” Odyssey OLED G5 (G50SF) Series QHD & QD-OLED Gaming Monitor",
+   "url": "https://www.amazon.com/dp/B0FNQDNGXY"
   },
   {
    "key": "Q27GAZDV",
@@ -22,14 +22,14 @@
    "url": "https://www.amazon.com/dp/B0GT2JP76J"
   },
   {
-   "key": "27G50SF",
+   "key": "XG27AQDMGR",
    "generic": false,
    "source": "Amazon.com",
    "retailer": "amazon",
-   "price": 330,
+   "price": 399,
    "risky": false,
-   "title": "Samsung 27” Odyssey OLED G5 (G50SF) Series QHD & QD-OLED Gaming Monitor",
-   "url": "https://www.amazon.com/dp/B0FNQDNGXY"
+   "title": "ASUS ROG XG27AQDMGR 27 Inch 1440p 240Hz Glossy OLED HDR Gaming Monitor",
+   "url": "https://www.amazon.com/dp/B0FWHPY1GJ"
   },
   {
    "key": "27GX704A",
@@ -72,24 +72,24 @@
    "url": "https://www.amazon.com/dp/B0F6724X5N"
   },
   {
-   "key": "XG27ACDNG",
+   "key": "AW3426DW",
    "generic": false,
    "source": "Amazon.com",
    "retailer": "amazon",
-   "price": 690,
+   "price": 750,
    "risky": false,
-   "title": "ASUS ROG Strix 26.5” 1440P QD-OLED Gaming Monitor (XG27ACDNG) -QHD (2560x1440), 360Hz, 0.03ms, Custom Heatsink, OLED Care+, G-SYNC Compatible, 99% DCI-P3, DisplayWidget, AI Gaming, 3yr Warranty",
-   "url": "https://www.amazon.com/dp/B0D7NSZRJW"
+   "title": "Alienware 34 Gaming Monitor AW3426DW, UWQHD QD-OLED, 280Hz, 0.03ms, G-SYNC",
+   "url": "https://www.amazon.com/dp/B0HFHZJ6C2"
   },
   {
-   "key": "PG27AQDM",
+   "key": "27G61SH",
    "generic": false,
    "source": "Amazon.com",
    "retailer": "amazon",
-   "price": 499,
+   "price": 415,
    "risky": false,
-   "title": "ASUS ROG PG27AQDM-R 27 Inch 1440p 240Hz OLED Gaming Monitor",
-   "url": "https://www.amazon.com/dp/B0D7NZHH2K"
+   "title": "Samsung 27\" Odyssey OLED G6 (G61SH) QD-OLED, QHD (1440P) Gaming Monitor",
+   "url": "https://www.amazon.com/dp/B0GDSC8K2H"
   },
   {
    "key": "XG32UCWG",
@@ -102,14 +102,14 @@
    "url": "https://www.amazon.com/dp/B0F7313X8L"
   },
   {
-   "key": "27G61SH",
+   "key": "PG32UCDM3",
    "generic": false,
    "source": "Amazon.com",
    "retailer": "amazon",
-   "price": 417,
+   "price": 1299,
    "risky": false,
-   "title": "Samsung 27\" Odyssey OLED G6 (G61SH) QD-OLED, QHD (1440P) Gaming Monitor",
-   "url": "https://www.amazon.com/dp/B0GDSC8K2H"
+   "title": "ASUS ROG PG32UCDM3 32 Inch 4K 240Hz Tandem OLED Gaming Monitor",
+   "url": "https://www.amazon.com/dp/B0G31KVQ1H"
   },
   {
    "key": "PG32UCDP",
@@ -122,16 +122,6 @@
    "url": "https://www.amazon.com/dp/B0D7NNK43H"
   },
   {
-   "key": "AW3426DW",
-   "generic": false,
-   "source": "Amazon.com",
-   "retailer": "amazon",
-   "price": 750,
-   "risky": false,
-   "title": "Alienware 34 Gaming Monitor AW3426DW, UWQHD QD-OLED, 280Hz, 0.03ms, G-SYNC",
-   "url": "https://www.amazon.com/dp/B0HFHZJ6C2"
-  },
-  {
    "key": "~GIGABYTE 27\" QHD 240Hz",
    "generic": true,
    "source": "Amazon.com",
@@ -142,14 +132,14 @@
    "url": "https://www.amazon.com/dp/B0GV155YQM"
   },
   {
-   "key": "27G70SH",
+   "key": "MAG274QP",
    "generic": false,
    "source": "Amazon.com",
    "retailer": "amazon",
-   "price": 750,
+   "price": 320,
    "risky": false,
-   "title": "Samsung 27\" Odyssey OLED G7 (G70SH) 4K 165Hz Gaming Monitor",
-   "url": "https://www.amazon.com/dp/B0H8QKBQ8X"
+   "title": "msi MAG 274QP QD-OLED X24 27-Inch WQHD Gaming Monitor, 2560 x 1440 Quantum Dot OLED Panel, 240Hz, 0.03ms, Adaptive-Sync, HDMI2.1, DP 1.4a, Tilt/Height Adjustable, Black",
+   "url": "https://www.amazon.com/dp/B0G4P697M8"
   },
   {
    "key": "~HP 31\" 4K 240Hz",
@@ -172,16 +162,6 @@
    "url": "https://www.amazon.com/dp/B0FTS1KC43"
   },
   {
-   "key": "MAG274QP",
-   "generic": false,
-   "source": "Amazon.com",
-   "retailer": "amazon",
-   "price": 320,
-   "risky": false,
-   "title": "msi MAG 274QP QD-OLED X24 27-Inch WQHD Gaming Monitor, 2560 x 1440 Quantum Dot OLED Panel, 240Hz, 0.03ms, Adaptive-Sync, HDMI2.1, DP 1.4a, Tilt/Height Adjustable, Black",
-   "url": "https://www.amazon.com/dp/B0G4P697M8"
-  },
-  {
    "key": "AG276QZD2",
    "generic": false,
    "source": "Amazon.com",
@@ -192,14 +172,14 @@
    "url": "https://www.amazon.com/dp/B0D682HF6R"
   },
   {
-   "key": "Q27GADE",
+   "key": "XG27ACDNG",
    "generic": false,
    "source": "Amazon.com",
    "retailer": "amazon",
-   "price": 330,
+   "price": 690,
    "risky": false,
-   "title": "AOC 27\" Gaming Monitor QHD QD OLED 144Hz NVIDIA G-SYNC Compatible Q27GADE",
-   "url": "https://www.amazon.com/dp/B0H7YN3XLH"
+   "title": "ASUS ROG Strix 26.5” 1440P QD-OLED Gaming Monitor (XG27ACDNG) -QHD (2560x1440), 360Hz, 0.03ms, Custom Heatsink, OLED Care+, G-SYNC Compatible, 99% DCI-P3, DisplayWidget, AI Gaming, 3yr Warranty",
+   "url": "https://www.amazon.com/dp/B0D7NSZRJW"
   },
   {
    "key": "MPG321URXW",
@@ -222,6 +202,16 @@
    "url": "https://www.amazon.com/dp/B0CZSGWLD5"
   },
   {
+   "key": "MAG341CQP",
+   "generic": false,
+   "source": "Amazon.com",
+   "retailer": "amazon",
+   "price": 730,
+   "risky": false,
+   "title": "msi MAG 341CQP QD-OLED X28 34\" UWQHD Tandem Monitor, 3440x1440,1800R, RGB Stripe, DarkArmor Film, Uniform Luminance, 280Hz, 0.03ms,AI Care Sensor,AMD FreeSync Premium Pro,NVIDIA G-SYNC Compatible",
+   "url": "https://www.amazon.com/dp/B0H4ZZFRM2"
+  },
+  {
    "key": "PG27UCDM",
    "generic": false,
    "source": "Amazon.com",
@@ -230,26 +220,6 @@
    "risky": false,
    "title": "ASUS ROG PG27UCDM 27 Inch 4K 240Hz OLED Gaming Monitor QD-OLED",
    "url": "https://www.amazon.com/dp/B0DM6SHQTN"
-  },
-  {
-   "key": "~DELL 31\" 4K 120Hz",
-   "generic": true,
-   "source": "Amazon.com",
-   "retailer": "amazon",
-   "price": 736,
-   "risky": false,
-   "title": "Dell 32 Plus 4K QD-OLED Monitor S3225QC - 31.6-inch (3840 x 2160) 120Hz 0.03ms Display, AI-Enhanced 3D Spatial Audio, Height/Tilt/Swivel/Slant Adjustment - Ash White",
-   "url": "https://www.amazon.com/dp/B0FB46P6F6"
-  },
-  {
-   "key": "MPG271QRX",
-   "generic": false,
-   "source": "Amazon.com",
-   "retailer": "amazon",
-   "price": 580,
-   "risky": false,
-   "title": "msi MPG 271QRX QD-OLED, 27 OLED Gaming Monitor, 2560 x 1440 (QHD), 0.03ms Response time, 360Hz, True Black HDR 400, HDMI, DP Port, USB Type C, Tilt, Height, Black",
-   "url": "https://www.amazon.com/dp/B0CTS1RQ6Y"
   },
   {
    "key": "27GS93QE",
@@ -262,6 +232,16 @@
    "url": "https://www.amazon.com/dp/B0DF786923"
   },
   {
+   "key": "PG27AQDM",
+   "generic": false,
+   "source": "Amazon.com",
+   "retailer": "amazon",
+   "price": 499,
+   "risky": false,
+   "title": "ASUS ROG PG27AQDM-R 27 Inch 1440p 240Hz OLED Gaming Monitor",
+   "url": "https://www.amazon.com/dp/B0D7NZHH2K"
+  },
+  {
    "key": "~AOC 27\" QHD 240Hz",
    "generic": true,
    "source": "Amazon.com",
@@ -270,16 +250,6 @@
    "risky": true,
    "title": "AOC - 27” Q27G41ZDF QD-OLED, QHD, 240hz, G-Sync Compatible, .03ms, Gaming Monitor - Black (Renewed)",
    "url": "https://www.amazon.com/dp/B0G7MJZXVV"
-  },
-  {
-   "key": "32GX850A",
-   "generic": false,
-   "source": "Amazon.com",
-   "retailer": "amazon",
-   "price": 678,
-   "risky": true,
-   "title": "LG 32GX850A-B 32\" UltraGear 4K UHD (3840 x 2160) Glossy OLED Gaming Monitor (Renewed) (Renewed)",
-   "url": "https://www.amazon.com/dp/B0GWTJS73R"
   },
   {
    "key": "~MSI 27\" QHD 144Hz",
@@ -292,6 +262,16 @@
    "url": "https://www.amazon.com/dp/B0H88F2185"
   },
   {
+   "key": "~INNOCN 27\" QHD 240Hz",
+   "generic": true,
+   "source": "Amazon.com",
+   "retailer": "amazon",
+   "price": 500,
+   "risky": false,
+   "title": "INNOCN 27\" Gaming Monitor QD-OLED QHD 2560 x 1440P 240Hz 0.03ms, HDR, 2780S",
+   "url": "https://www.amazon.com/dp/B0H973MXT3"
+  },
+  {
    "key": "34G85SD",
    "generic": false,
    "source": "Amazon.com",
@@ -300,6 +280,16 @@
    "risky": true,
    "title": "Samsung G85SD 34-inch Odyssey OLED G8 Ultra-WQHD Curved Gaming Monitor - (Renewed)",
    "url": "https://www.amazon.com/dp/B0FGJVGH4G"
+  },
+  {
+   "key": "~ASUS 31\" 4K",
+   "generic": true,
+   "source": "Amazon.com",
+   "retailer": "amazon",
+   "price": 1599,
+   "risky": true,
+   "title": "ASUS ProArt Display 31.5” 4K OLED Professional Monitor (PA32DC) (Renewed)",
+   "url": "https://www.amazon.com/dp/B0CJXJTN2W"
   },
   {
    "key": "32GX870A",
@@ -332,26 +322,6 @@
    "url": "https://www.amazon.com/dp/B0DJV6XB9K"
   },
   {
-   "key": "27GS95QE",
-   "generic": false,
-   "source": "Amazon.com",
-   "retailer": "amazon",
-   "price": 600,
-   "risky": true,
-   "title": "LG ‎27GS95QE 27-inch Ultragear OLED Gaming Monitor QHD 240Hz 0.03ms DisplayHDR True Black 400 AMD FreeSync Premium Pro NVIDIA G-Sync HDMI 2.1 DisplayPort Tilt/Height/Swivel Stand Black (Renewed)",
-   "url": "https://www.amazon.com/dp/B0D524K2PB"
-  },
-  {
-   "key": "~ASUS 31\" 4K",
-   "generic": true,
-   "source": "Amazon.com",
-   "retailer": "amazon",
-   "price": 1599,
-   "risky": true,
-   "title": "ASUS ProArt Display 31.5” 4K OLED Professional Monitor (PA32DC) (Renewed)",
-   "url": "https://www.amazon.com/dp/B0CJXJTN2W"
-  },
-  {
    "key": "~LG 32\" 4K",
    "generic": true,
    "source": "Amazon.com",
@@ -362,94 +332,34 @@
    "url": "https://www.amazon.com/dp/B0D523M776"
   },
   {
-   "key": "MAG272QP",
-   "generic": false,
-   "source": "Best Buy",
-   "retailer": "bestbuy",
-   "price": 650,
-   "risky": false,
-   "title": "MSI - MAG 272QP QD-OLED X50 27\" QHD 500Hz 0.03ms Gaming Monitor with G-SYNC FreeSync Premium Pro and TB 400 (HDMI, DP) - Black",
-   "url": "https://www.bestbuy.com/product/msi-mag-272qp-qd-oled-x50-27-qhd-500hz-0-03ms-gaming-monitor-with-g-sync-freesync-premium-pro-and-tb-400-hdmi-dp-black/J3P7TX6FTK/sku/6643709"
-  },
-  {
-   "key": "MAG274QP",
-   "generic": false,
-   "source": "Best Buy",
-   "retailer": "bestbuy",
-   "price": 395,
-   "risky": false,
-   "title": "MSI - MAG 274QP QD-OLED X24 27\" QHD 240Hz 0.03ms Gaming Monitor with G-SYNC FreeSync Premium Pro HDR Ready (HDMI, DP) - Metallic Black",
-   "url": "https://www.bestbuy.com/product/msi-mag-274qp-qd-oled-x24-27-qhd-240hz-0-03ms-gaming-monitor-with-g-sync-freesync-premium-pro-hdr-ready-hdmi-dp-metallic-black/J3P7TXQVKP/sku/6673816"
-  },
-  {
-   "key": "~OMEN 27\" QHD 240Hz",
+   "key": "~ALIENWARE 34\" QHD 280Hz",
    "generic": true,
    "source": "Best Buy",
    "retailer": "bestbuy",
-   "price": 500,
+   "price": 800,
    "risky": false,
-   "title": "HyperX - OMEN 27\" OLED QHD 240Hz 0.03ms GtG G-SYNC Compatible Gaming Monitor with Adjustable Height (DisplayPort, HDMI) - Black",
-   "url": "https://www.bestbuy.com/product/hyperx-omen-27-oled-qhd-240hz-0-03ms-gtg-g-sync-compatible-gaming-monitor-with-adjustable-height-displayport-hdmi-black/JJGTWPFSC2/sku/6669985"
+   "title": "New! - Alienware - 34\" UWQHD QD-OLED 280Hz .03ms FreeSync Premium Pro and G-SYNC Compatible Curved Gaming Monitor w/HDR (HDMI, DisplayPort) - Black",
+   "url": "https://www.bestbuy.com/product/alienware-34-uwqhd-qd-oled-280hz-03ms-freesync-premium-pro-and-g-sync-compatible-curved-gaming-monitor-w-hdr-hdmi-displayport-black/J3K4L6WL6X"
   },
   {
-   "key": "MPG321URXW",
+   "key": "~ACER 27\" QHD 240Hz",
+   "generic": true,
+   "source": "Best Buy",
+   "retailer": "bestbuy",
+   "price": 330,
+   "risky": false,
+   "title": "Acer - Predator 27\" QD-OLED QHD 240Hz 0.03ms FreeSync Premium Gaming Monitor with HDR (DisplayPort, HDMI) - Black",
+   "url": "https://www.bestbuy.com/product/acer-predator-27-qd-oled-qhd-240hz-0-03ms-freesync-premium-gaming-monitor-with-hdr-displayport-hdmi-black/JJ8V8HPR3X/sku/6685680"
+  },
+  {
+   "key": "AW3225QF",
    "generic": false,
    "source": "Best Buy",
    "retailer": "bestbuy",
-   "price": 750,
+   "price": 780,
    "risky": false,
-   "title": "MSI - MPG 321URXW QD-OLED 32\" UHD 240Hz 0.03ms Gaming Monitor with G-SYNC and TB 400 (HDMI, DisplayPort, USB-C) - Metallic White",
-   "url": "https://www.bestbuy.com/product/msi-mpg-321urxw-qd-oled-32-uhd-240hz-0-03ms-gaming-monitor-with-g-sync-and-tb-400-hdmi-displayport-usb-c-metallic-white/J3P7TX9HTV/sku/6613925"
-  },
-  {
-   "key": "27G70SH",
-   "generic": false,
-   "source": "Samsung US",
-   "retailer": "samsungus",
-   "price": 1000,
-   "risky": false,
-   "title": "27 Inch Odyssey OLED G7 G70SH",
-   "url": "https://www.samsung.com/us/monitors/gaming/27-inch-odyssey-oled-g7-g70sh-4k-gaming-monitor-sku-ls27hg702snxza"
-  },
-  {
-   "key": "49G95SD",
-   "generic": false,
-   "source": "Samsung US",
-   "retailer": "samsungus",
-   "price": 1900,
-   "risky": false,
-   "title": "49 Inch Odyssey OLED G9 G95SD",
-   "url": "https://www.samsung.com/us/monitors/gaming/49-inch-odyssey-oled-g9-g95sd-dual-qhd-240hz-03ms-g-sync-sku-ls49dg956snxgo"
-  },
-  {
-   "key": "32G80SH",
-   "generic": false,
-   "source": "Samsung US",
-   "retailer": "samsungus",
-   "price": 1300,
-   "risky": false,
-   "title": "32 Inch Odyssey OLED G8 G80SH",
-   "url": "https://www.samsung.com/us/monitors/gaming/32-inch-odyssey-oled-g8-g80sh-4k-gaming-monitor-sku-ls32hg802snxza"
-  },
-  {
-   "key": "27G60SF",
-   "generic": false,
-   "source": "Samsung US",
-   "retailer": "samsungus",
-   "price": 1000,
-   "risky": false,
-   "title": "27 Inch Odyssey OLED G6 G60SF",
-   "url": "https://www.samsung.com/us/monitors/gaming/27-inch-odyssey-oled-g6-g60sf-qhd-500hz-gaming-monitor-sku-ls27fg602snxza"
-  },
-  {
-   "key": "27G61SD",
-   "generic": false,
-   "source": "Samsung US",
-   "retailer": "samsungus",
-   "price": 800,
-   "risky": false,
-   "title": "27 Inch Odyssey OLED G6 G61SD",
-   "url": "https://www.samsung.com/us/monitors/gaming/27-inch-odyssey-oled-g6-g61sd-qhd-240hz-03ms-g-sync-sku-ls27dg610snxza"
+   "title": "Alienware - AW3225QF 32\" QD-OLED Curved 4K UHD 240Hz 0.03-ms G-SYNC Compatible Gaming Monitor with HDR (HDMI, DisplayPort. USB) - Lunar Light",
+   "url": "https://www.bestbuy.com/product/alienware-aw3225qf-32-qd-oled-curved-4k-uhd-240hz-0-03-ms-g-sync-compatible-gaming-monitor-with-hdr-hdmi-displayport-usb-lunar-light/J3K4L62597/sku/6576612"
   },
   {
    "key": "MAG272QP",
@@ -576,9 +486,9 @@
    "generic": false,
    "source": "Newegg",
    "retailer": "newegg",
-   "price": 799,
-   "risky": false,
-   "title": "MSI 49\" DQHD 2K 1440P 144Hz AMD FreeSync Premium Pro 0.03ms HDR400 DCI-P3 99% USB-C VRR KVM OLED 1800R Curved Gaming Computer Monitor with Height Adjustable, Swivel & Tilt stand MPG 491CQP QD-OLED",
+   "price": 699,
+   "risky": true,
+   "title": "USED - VERY GOOD MSI 49\" DQHD 2K 1440P 144Hz AMD FreeSync Premium Pro 0.03ms HDR400 DCI-P3 99% USB-C VRR KVM OLED 1800R Curved Gaming Computer Monitor with Height Adjustable, Swivel & Tilt stand MPG 491CQP QD-OLED",
    "url": "https://www.newegg.com/msi-mpg-491cqp-qd-oled-49-dqhd-144-hz/p/N82E16824475356"
   },
   {
